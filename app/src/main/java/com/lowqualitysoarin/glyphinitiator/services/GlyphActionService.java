@@ -26,10 +26,17 @@ public class GlyphActionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         OggEntry entry = OggEntryAdapter.pickRandom();
+        boolean noAudio = false;
+
         if (intent != null && intent.getExtras() != null) {
             String value = intent.getStringExtra("actionKey");
             if (value != null) {
                 entry = OggEntryAdapter.getEntry(value);
+            }
+
+            boolean noAudioValue = intent.getBooleanExtra("noAudio", false);
+            if (noAudioValue) {
+                noAudio = true;
             }
         }
 
@@ -44,7 +51,7 @@ public class GlyphActionService extends Service {
         Notification foregroundNotification = AppNotificationManager.createForegroundNotification(this, "Glyph Action Running", "Playing glyph composition...");
         startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
 
-        GlyphPlayComposition.playComposition(context, fileUri, composition);
+        GlyphPlayComposition.playComposition(context, fileUri, composition, noAudio);
         return START_STICKY;
     }
 

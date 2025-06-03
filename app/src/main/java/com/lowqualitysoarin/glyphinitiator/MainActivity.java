@@ -15,9 +15,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.Gson; // For easy serialization/deserialization of list
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lowqualitysoarin.glyphinitiator.entry.OggEntry;
+import com.lowqualitysoarin.glyphinitiator.glyphcontrol.GlyphControl;
+import com.lowqualitysoarin.glyphinitiator.notif.AppNotificationManager;
+import com.lowqualitysoarin.glyphinitiator.services.GlyphStartSessionService;
 import com.lowqualitysoarin.glyphinitiator.utils.OggEntryAdapter;
 
 import java.lang.reflect.Type;
@@ -28,33 +31,38 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
     private static final String PREFS_NAME = "OggEntriesPrefs";
     private static final String KEY_OGG_ENTRIES = "ogg_entries_list";
 
-    private Button chooseFileButton;
-    private RecyclerView recyclerView;
     private OggEntryAdapter adapter;
     private ArrayList<OggEntry> oggEntriesList;
     private SharedPreferences sharedPreferences;
-    private Gson gson; // For serializing the list to JSON
-
-    // Modern way to handle activity results
+    private Gson gson;
     private ActivityResultLauncher<Intent> filePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); // Make sure you have activity_main.xml
 
-        chooseFileButton = findViewById(R.id.button_choose_file);
-        recyclerView = findViewById(R.id.recycler_view_ogg_entries);
+        if (!AppNotificationManager.isNotificationChannelReady()) {
+            AppNotificationManager.readyNotificationChannel(this);
+        }
+
+        if (!GlyphControl.isGlyphStarted()) {
+            Intent startSessionService = new Intent(this, GlyphStartSessionService.class);
+            startForegroundService(startSessionService);
+        }
+
+        setContentView(R.layout.activity_main);
+
+        Button chooseFileButton = findViewById(R.id.button_choose_file);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_ogg_entries);
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         gson = new Gson();
-        oggEntriesList = loadEntries(); // Load saved entries
+        oggEntriesList = loadEntries();
 
         adapter = new OggEntryAdapter(oggEntriesList, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        // Initialize the ActivityResultLauncher
         filePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -62,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
                         Intent data = result.getData();
                         if (data != null && data.getData() != null) {
                             Uri selectedFileUri = data.getData();
-                            // Persist permission to access the URI across device restarts
                             getContentResolver().takePersistableUriPermission(selectedFileUri,
                                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             promptForName(selectedFileUri);

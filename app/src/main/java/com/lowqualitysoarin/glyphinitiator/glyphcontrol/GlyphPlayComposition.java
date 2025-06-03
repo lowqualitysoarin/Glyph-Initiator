@@ -2,7 +2,6 @@ package com.lowqualitysoarin.glyphinitiator.glyphcontrol;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -10,9 +9,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
-
-import com.lowqualitysoarin.glyphinitiator.services.GlyphStartSessionService;
-import com.lowqualitysoarin.glyphinitiator.services.GlyphStopSessionService;
 
 import java.io.IOException;
 
@@ -101,8 +97,6 @@ public class GlyphPlayComposition {
     }
     private static final TimedLoopRunnable timedLoopRunnable = new TimedLoopRunnable();
 
-    private static boolean isPlaying;
-
     private static synchronized void ensureThreadStarted() {
         if (glyphHandlerThread == null || !glyphHandlerThread.isAlive()) {
             glyphHandlerThread = new HandlerThread("GlyphSequenceThread", Process.THREAD_PRIORITY_BACKGROUND);
@@ -122,7 +116,7 @@ public class GlyphPlayComposition {
         }
     }
 
-    public static void playComposition(Context appContext, Uri fileUri, int[][] composition) {
+    public static void playComposition(Context appContext, Uri fileUri, int[][] composition, boolean noAudio) {
         if (composition == null || composition.length == 0) {
             Log.w("GlyphPlayComposition", "Composition is null or empty. Cannot play.");
             return;
@@ -136,18 +130,24 @@ public class GlyphPlayComposition {
         totalIterations = composition.length;
         currentIteration = 0;
 
-        mediaPlayer = new MediaPlayer();
         currentContext = appContext;
         if (currentContext == null) {
             return;
         }
 
+        mediaPlayer = new MediaPlayer();
         try {
             mediaPlayer.setDataSource(appContext, fileUri);
+
+            if (noAudio) {
+                mediaPlayer.setVolume(0f, 0f);
+                Log.d("MediaPlayerDebug", "Media player muted.");
+            }
+
             mediaPlayer.setOnPreparedListener(mp -> {
                 Log.d("MediaPlayerDebug", "MediaPlayer prepared. Starting playback.");
                 isMediaPlayerPrepared = true;
-                if (shouldPlayImmediatelyAfterPrepare) {
+                if (!noAudio && shouldPlayImmediatelyAfterPrepare) {
                     mp.start();
                 }
             });
@@ -226,7 +226,6 @@ public class GlyphPlayComposition {
             Log.d("GlyphLoopThread", "Composition playback sequence posted.");
 
             GlyphControl.startGlyphSession(currentContext);
-            isPlaying = true;
         } else {
             Log.e("GlyphPlayComposition", "glyphSequenceHandler is null. Cannot start playback sequence.");
             if (mediaPlayer != null) {
@@ -274,7 +273,6 @@ public class GlyphPlayComposition {
         }
 
         GlyphControl.endGlyphSession();
-        isPlaying = false;
 
         currentContext = null;
         if (mediaPlayer != null) {
@@ -289,10 +287,6 @@ public class GlyphPlayComposition {
             GlyphControl.glyphOff();
             Log.d("GlyphLoopThread", "GlyphOff called on main thread due to stopComposition.");
         });
-    }
-
-    public static boolean isGlyphCompositionPlaying() {
-        return isPlaying;
     }
 
     public static synchronized void release() {
