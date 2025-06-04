@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import com.lowqualitysoarin.glyphinitiator.entry.OggEntry;
@@ -25,20 +26,17 @@ public class GlyphActionService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        OggEntry entry = OggEntryAdapter.pickRandom();
-        boolean noAudio = false;
-
-        if (intent != null && intent.getExtras() != null) {
-            String value = intent.getStringExtra("actionKey");
-            if (value != null) {
-                entry = OggEntryAdapter.getEntry(value);
-            }
-
-            boolean noAudioValue = intent.getBooleanExtra("noAudio", false);
-            if (noAudioValue) {
-                noAudio = true;
-            }
+        if (intent == null || intent.getExtras() == null) {
+            Log.e("GlyphActionService", "Can't start service without intent extras.");
+            return START_NOT_STICKY;
         }
+
+        OggEntry entry = OggEntryAdapter.pickRandom();
+        if (intent.getExtras().containsKey("actionKey")) {
+            entry = OggEntryAdapter.getEntry(intent.getExtras().getString("actionKey"));
+        }
+
+        boolean noAudio = intent.getBooleanExtra("noAudio", false);;
 
         if (entry == null || entry.getUriString() == null) {
             stopSelf();

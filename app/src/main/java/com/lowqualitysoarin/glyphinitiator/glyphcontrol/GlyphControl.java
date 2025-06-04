@@ -13,7 +13,7 @@ public class GlyphControl {
     private static int npModelIndex = 0;
 
     @SuppressLint("StaticFieldLeak")
-    static GlyphManager mGM = null;
+    private static GlyphManager mGM = null;
     private static GlyphManager.Callback mCallback = null;
     private static boolean started = false;
 
@@ -41,7 +41,10 @@ public class GlyphControl {
         } catch (GlyphException e) {
             throw new RuntimeException(e);
         }
+
         mGM.unInit();
+        //mGM = null;
+
         started = false;
         Log.d(tag, "Glyph session ended");
     }
@@ -90,39 +93,63 @@ public class GlyphControl {
         };
     }
 
-    public static void buildChannelA(int interval, int cycles, int period) {
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = builder.buildChannelA().buildInterval(interval).buildCycles(cycles).buildPeriod(period).build();
-        mGM.animate(frame);
-    }
-
-    public static void buildChannelB(int interval, int cycles, int period) {
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = builder.buildChannelB().buildInterval(interval).buildCycles(cycles).buildPeriod(period).build();
-        mGM.animate(frame);
-    }
-
-    public static void buildChannelC(int interval, int cycles, int period) {
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = builder.buildChannelC().buildInterval(interval).buildCycles(cycles).buildPeriod(period).build();
-        mGM.animate(frame);
-    }
-
-    public static void buildChannelD(int interval, int cycles, int period) {
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = builder.buildChannelD().buildInterval(interval).buildCycles(cycles).buildPeriod(period).build();
-        mGM.animate(frame);
-    }
-
-    public static void buildChannelE(int interval, int cycles, int period) {
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = builder.buildChannelE().buildInterval(interval).buildCycles(cycles).buildPeriod(period).build();
-        mGM.animate(frame);
-    }
-
     public static void glyphPlaySequence(int[] sequenceArr) {
         try {
             mGM.setFrameColors(sequenceArr);
+        } catch (GlyphException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void glyphDisplayProgress(String channel, int progress, boolean reversed) {
+        if (getDeviceModelIndex() == 0) return;
+
+        int deviceModelIndex = getDeviceModelIndex();
+        switch (deviceModelIndex) {
+            case 1:
+                if (!channel.equalsIgnoreCase("d")) {
+                    Log.e(tag, "Channels other than C is not supported on the Nothing Phone (1).");
+                    return;
+                }
+            case 2:
+                if (!channel.equalsIgnoreCase("d") || !channel.equalsIgnoreCase(("c"))) {
+                    Log.e(tag, "Channels other than C and D is not supported on the Nothing Phone (2).");
+                    return;
+                }
+            case 3:
+            case 4:
+                if (!channel.equalsIgnoreCase("c")) {
+                    Log.e(tag, "Channels other than C is not supported on the Nothing Phone (2a) series.");
+                    return;
+                }
+        }
+
+        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
+        GlyphFrame frame = null;
+
+        switch (channel) {
+            case "a":
+                frame = builder.buildChannelA().build();
+                break;
+            case "b":
+                frame = builder.buildChannelB().build();
+                break;
+            case "c":
+                frame = builder.buildChannelC().build();
+                break;
+            case "d":
+                frame = builder.buildChannelD().build();
+                break;
+        }
+
+
+        if (frame == null) {
+            Log.e(tag, "Invalid channel: " + channel);
+            return;
+        }
+
+        try {
+            mGM.displayProgress(frame, progress, reversed);
         } catch (GlyphException e) {
             throw new RuntimeException(e);
         }

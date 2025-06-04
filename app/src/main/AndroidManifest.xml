@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="com.nothing.ketchum.permission.ENABLE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,8 +26,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".services.GlyphStartSessionService" android:foregroundServiceType="specialUse"/>
-        <service android:name=".services.GlyphStopSessionService" android:foregroundServiceType="specialUse"/>
+
+        <service
+            android:name=".services.GlyphStartSessionService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.lqs.glyph.intent.action.START_GLYPH_SESSION" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.GlyphStopSessionService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.lqs.glyph.intent.action.STOP_GLYPH_SESSION" />
+            </intent-filter>
+        </service>
 
         <service
             android:name=".services.GlyphActionService"
@@ -36,6 +56,7 @@
                 <action android:name="com.lqs.glyph.intent.action.PLAY_GLYPH_ACTION" />
             </intent-filter>
         </service>
+
         <service
             android:name=".services.GlyphStopActionService"
             android:exported="true"
@@ -43,6 +64,16 @@
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.lqs.glyphinitiator.intent.action.STOP_GLYPH_ACTION" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.GlyphDisplayProgressService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="com.lqs.glyph.intent.action.DISPLAY_PROGRESS" />
             </intent-filter>
         </service>
     </application>
