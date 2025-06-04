@@ -18,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lowqualitysoarin.glyphinitiator.entry.OggEntry;
-import com.lowqualitysoarin.glyphinitiator.glyphcontrol.GlyphControl;
-import com.lowqualitysoarin.glyphinitiator.notif.AppNotificationManager;
-import com.lowqualitysoarin.glyphinitiator.services.GlyphStartSessionService;
+import com.lowqualitysoarin.glyphinitiator.services.ApplicationInitiatorService;
 import com.lowqualitysoarin.glyphinitiator.utils.OggEntryAdapter;
 
 import java.lang.reflect.Type;
@@ -41,17 +39,10 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!AppNotificationManager.isNotificationChannelReady()) {
-            AppNotificationManager.readyNotificationChannel(this);
-        }
-
-        if (!GlyphControl.isGlyphStarted()) {
-            Intent startSessionService = new Intent(this, GlyphStartSessionService.class);
-            startForegroundService(startSessionService);
-        }
+        Intent appInitiatorService = new Intent(this, ApplicationInitiatorService.class);
+        startService(appInitiatorService);
 
         setContentView(R.layout.activity_main);
-
         Button chooseFileButton = findViewById(R.id.button_choose_file);
         RecyclerView recyclerView = findViewById(R.id.recycler_view_ogg_entries);
 

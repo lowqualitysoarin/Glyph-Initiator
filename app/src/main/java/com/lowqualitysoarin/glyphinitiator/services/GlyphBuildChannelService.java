@@ -1,8 +1,6 @@
 package com.lowqualitysoarin.glyphinitiator.services;
 
-import android.app.Notification;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -11,13 +9,12 @@ import androidx.annotation.Nullable;
 
 import com.lowqualitysoarin.glyphinitiator.glyphcontrol.GlyphBuildParams;
 import com.lowqualitysoarin.glyphinitiator.glyphcontrol.GlyphControl;
-import com.lowqualitysoarin.glyphinitiator.notif.AppNotificationManager;
 
-public class GlyphDisplayProgressService extends Service {
+public class GlyphBuildChannelService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null || intent.getExtras() == null) {
-            Log.e("GlyphDisplayProgressService", "Can't start this service without extra data or without intent.");
+            Log.e("GlyphBuildChannelService", "Can't start this service without extra data or without intent.");
             return START_NOT_STICKY;
         }
 
@@ -27,17 +24,18 @@ public class GlyphDisplayProgressService extends Service {
         }
 
         if (channel != null && channel.isBlank()) {
-            Log.e("GlyphDisplayProgressService", "Can't start this service without a channel.");
+            Log.e("GlyphBuildChannelService", "Can't start this service without a channel.");
             return START_NOT_STICKY;
         }
 
-        int progress = intent.getIntExtra("progress", 0);
-        boolean reversed = intent.getBooleanExtra("reversed", false);
+        boolean noAnimate = intent.getBooleanExtra("noAnimate", false);
 
-        Notification foregroundNotification = AppNotificationManager.createForegroundNotification(getApplicationContext(), "Glyph Progress Running", "Trying to show progress on the glyph.");
-        startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
+        GlyphBuildParams buildParams = new GlyphBuildParams();
+        buildParams.interval = intent.getIntExtra("interval", 10);
+        buildParams.cycles = intent.getIntExtra("cycles", 1);
+        buildParams.period = intent.getIntExtra("period", 3000);
 
-        GlyphControl.glyphDisplayProgress(channel, progress, reversed);
+        GlyphControl.glyphBuildChannel(channel, noAnimate, buildParams);
         return START_STICKY;
     }
 

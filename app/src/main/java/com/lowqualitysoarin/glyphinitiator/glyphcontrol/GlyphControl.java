@@ -108,7 +108,7 @@ public class GlyphControl {
         switch (deviceModelIndex) {
             case 1:
                 if (!channel.equalsIgnoreCase("d")) {
-                    Log.e(tag, "Channels other than C is not supported on the Nothing Phone (1).");
+                    Log.e(tag, "Channels other than D is not supported on the Nothing Phone (1).");
                     return;
                 }
             case 2:
@@ -124,39 +124,59 @@ public class GlyphControl {
                 }
         }
 
-        GlyphFrame.Builder builder = mGM.getGlyphFrameBuilder();
-        GlyphFrame frame = null;
-
-        switch (channel) {
-            case "a":
-                frame = builder.buildChannelA().build();
-                break;
-            case "b":
-                frame = builder.buildChannelB().build();
-                break;
-            case "c":
-                frame = builder.buildChannelC().build();
-                break;
-            case "d":
-                frame = builder.buildChannelD().build();
-                break;
-        }
-
-
-        if (frame == null) {
+        GlyphFrame.Builder channelFrame = getChannel(channel);
+        if (channelFrame == null) {
             Log.e(tag, "Invalid channel: " + channel);
             return;
         }
 
         try {
-            mGM.displayProgress(frame, progress, reversed);
+            GlyphFrame finalFrame = channelFrame.build();
+            mGM.displayProgress(finalFrame, progress, reversed);
         } catch (GlyphException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public static void glyphBuildChannel(String channel, boolean noAnimate, GlyphBuildParams buildParams) {
+        GlyphFrame.Builder channelFrame = getChannel(channel);
+        if (channelFrame == null) {
+            Log.e(tag, "Invalid channel: " + channel);
+            return;
+        }
+
+        GlyphFrame frame = channelFrame
+                .buildInterval(buildParams.interval)
+                .buildCycles(buildParams.cycles)
+                .buildPeriod(buildParams.period)
+                .build();
+
+        if (noAnimate) {
+            mGM.toggle(frame);
+        } else {
+            mGM.animate(frame);
+        }
+    }
+
     public static void glyphOff() {
         mGM.turnOff();
+    }
+
+    public static GlyphFrame.Builder getChannel(String channel) {
+        switch (channel.toLowerCase()) {
+            case "a":
+                return mGM.getGlyphFrameBuilder().buildChannelA();
+            case "b":
+                return mGM.getGlyphFrameBuilder().buildChannelB();
+            case "c":
+                return mGM.getGlyphFrameBuilder().buildChannelC();
+            case "d":
+                return mGM.getGlyphFrameBuilder().buildChannelD();
+            case "e":
+                return mGM.getGlyphFrameBuilder().buildChannelE();
+            default:
+                return null;
+        }
     }
 
     public static int getDeviceModelIndex() {
