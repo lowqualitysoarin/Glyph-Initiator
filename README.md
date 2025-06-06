@@ -27,6 +27,6 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 ## Parameter Help
 [String] channel : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone.
 
-[Integer] interval : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))
-[Integer] cycles : [Nothing's buildCycles documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildCycles(int%20cycles))
+[Integer] interval : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))\
+[Integer] cycles : [Nothing's buildCycles documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildCycles(int%20cycles))\
 [Integer] period : [Nothing's buildPeriod documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildPeriod(int%20period))
