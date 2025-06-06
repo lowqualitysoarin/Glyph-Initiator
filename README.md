@@ -6,12 +6,14 @@ via automation apps (at the moment its confirmed to work on Macrodroid), by send
 It allows you to create automations that interacts with your Glyph Interface, e.g. Glyph Alarm, Glyph Charge Indicator, Glyph Bluetooth Connection effect, etc...
 
 ### How do I get started?
+Download the app on the releases page here in this repository and install the apk on your phone, launch the app and accept permissions, confirm the app is marked as an active app by opening your quick settings menu and tapping on the icon mostly showed as (1) to the left of the settings icon. Once that is confirmed, you can close the app or stay in it if you want to add glyph composition entry.
+
 If you have Macrodroid you can download these Action Blocks to give you an idea on how to get this up and working.
 If you don't, in the mean time. Here is a little documentation how to setup the intent you are going to send to this application
 
-- Intent Typhe: _Service_
+- Intent Type: _Service_
 - Package Name: _com.lowqualitysoarin.glyphinitiator_
-- Action Name: _com.lqs.glyph.intent.action.[Action]_
+- Action Name: _com.lqs.glyph.intent.action.[Action - Replace this with the desired action below.]_
 
 ## Action List
 
@@ -25,6 +27,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 | BUILD_GLYPH_CHANNEL | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Boolean] noAnimate : false,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
 
 ## Parameter Help
+[String] actionKey : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make the sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.
 [String] channel : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone.
 
 [Integer] interval : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))\
