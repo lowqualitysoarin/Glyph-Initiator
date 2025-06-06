@@ -28,7 +28,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 | [**Action**] GLYPH_OFF<br/> [**Class**] .services.GlyphOffService | Different from STOP_GLYPH_SESSION, this just turns off all the lit up glyphs called by BUILD_GLYPH_CHANNEL DISPLAY_GLYPH_PROGRESS but doesn't stop the session. | None. | 
 
 ## Parameter Help
-[**String**] *actionKey* : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make the sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.<br/>
+[**String**] *actionKey* : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make the sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.<br/><br/>
 [**String**] *channel* : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone. You don't need to include the numbers on the zone from the documentation, example if you want to use the Channel "A" just put "A" instead of "A1"<br/>
 
 [**Integer**] *interval* : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))\
