@@ -7,7 +7,7 @@ It allows you to create automations that interacts with your Glyph Interface, e.
 
 ### How do I get started?
 If you have Macrodroid you can download these Action Blocks to give you an idea on how to get this up and working.
-If you don't in the mean time, here is a little documentation how to setup the intent you are going to send to this application
+If you don't, in the mean time. Here is a little documentation how to setup the intent you are going to send to this application
 
 - Package Name: com.lowqualitysoarin.glyphinitiator
 - Action Name: com.lqs.glyph.intent.action
