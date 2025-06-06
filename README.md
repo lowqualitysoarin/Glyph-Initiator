@@ -6,6 +6,8 @@ via automation apps (at the moment its confirmed to work on Macrodroid), by send
 It allows you to create automations that interacts with your Glyph Interface, e.g. Glyph Alarm, Glyph Charge Indicator, Glyph Bluetooth Connection effect, etc...
 
 ### How do I get started?
+Since I don't have the API key yet, you need to enable the glyph debugger in order for this app to function properly... Go to your Device's Settings/System/Developer options/ and scroll down a bit until you see Glyph Interface Debug Mode and enable it. If you can't see the setting you have to enable it via ADB, follow [Nothing's setup instructions](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#setup-instructions) on how to enable it via ADB commands.
+
 Download the app on the releases page here in this repository and install the apk on your phone, launch the app and accept permissions, confirm the app is marked as an active app by opening your quick settings menu and tapping on the icon mostly showed as (1) to the left of the settings icon. Once that is confirmed, you can close the app or stay in it if you want to add glyph composition entry.
 
 If you have Macrodroid you can download these Action Blocks to give you an idea on how to get this up and working.
