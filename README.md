@@ -21,8 +21,8 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 | STOP_GLYPH_SESSION | Stops the glyph session, always call this after when you are done sending actions through the app. Else essential notifications, and music visualization. won't work after calling your automation. | None. |
 | PLAY_GLYPH_ACTION | Plays a glyph action. | [String] actionKey : null, [Boolean] noAudio : false
 | STOP_GLYPH_ACTION | Stops the currently playing glyph action. | None. |
-| DISPLAY_GLYPH_PROGRESS | Displays the given progress to the glyph interface. | [String] channel : null,\ [Integer] progress : 0,\ [Boolean] reversed : false |
-| BUILD_GLYPH_CHANNEL | Toggles the given glyph channel from the intent. | [String] channel : null,\ [Integer] interval : 10,\ [Integer] cycles : 1,\ [Integer] period : 3000 |
+| DISPLAY_GLYPH_PROGRESS | Displays the given progress to the glyph interface. | [String] channel : null,<br/> [Integer] progress : 0,<br/> [Boolean] reversed : false |
+| BUILD_GLYPH_CHANNEL | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
 
 ## Parameter Help
 [String] channel : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone.
