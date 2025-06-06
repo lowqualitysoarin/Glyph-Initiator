@@ -3,7 +3,7 @@ Glyph Initiator is an application made specifically for Nothing Phones that allo
 via automation apps (at the moment its confirmed to work on Macrodroid), by sending intents to this application.
 
 ### What can I do with it?
-It allows you to create automations that interacts with your Glyph Interface, e.g. Glyph Alarm, Glyph Charge Indicator, Glyph Bluetooth Connection effect, etc...
+It allows your automations to control your Glyph Interface, e.g. like a Glyph Alarm, Glyph Charge Indicator, Glyph Bluetooth Connection effect, etc...
 
 ### How do I get started?
 Since I don't have the API key yet, you need to enable the glyph debugger in order for this app to function properly... Go to your Device's Settings/System/Developer options/ and scroll down a bit until you see Glyph Interface Debug Mode and enable it. If you can't see the setting you have to enable it via ADB, follow [Nothing's setup instructions](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#setup-instructions) on how to enable it via ADB commands.
