@@ -17,7 +17,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 
 | Action | Description | Parameters (Add the Parameters in your Intent's Extras. These are case-sensitive.) |
 | ------ | ----------- | ---------- |
-| START_GLYPH_SESSION | Starts the glyph session, recommended to always call first before calling BUILD_GLYPH_CHANNEL or DISPLAY_GLYPH_PROGRESS | None. |
+| START_GLYPH_SESSION | Starts the glyph session, recommended to always call first before calling BUILD_GLYPH_CHANNEL or DISPLAY_GLYPH_PROGRESS. | None. |
 | STOP_GLYPH_SESSION | Stops the glyph session, always call this after when you are done sending actions through the app. Else essential notifications, and music visualization. won't work after calling your automation. | None. |
 | PLAY_GLYPH_ACTION | Plays a glyph action. | [String] actionKey : The name of your action, should correspond with the entry you added in the Glyph Initiator app. , [Boolean] noAudio : Whether you want to play your action with no audio. Default value is "false". |
 | STOP_GLYPH_ACTION | Stops the current playing glyph action | None. |
