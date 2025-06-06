@@ -1,7 +1,6 @@
 ### Glyph Initiator
+Glyph Initiator is an application made specifically for Nothing Phones that allows the user to control the phone's Glyph Interface without needing root
+via automation apps (at the moment its confirmed to work on Macrodroid), by sending intents to this application.
 
-What is this app?
-> This app helps the user to control the glyph interface of their Nothing Phones without root by sending intents through this application.
-
-How do I send intents to control my glyph interface?
-> To send intents you need to download an app that allows you to send (Example: Macrodroid).
+## What can I do with it?
+It allows you to create automations that interacts with your Glyph Interface, e.g. Glyph Alarm, Glyph Charge Indicator, Glyph Bluetooth Connection effect, etc...
