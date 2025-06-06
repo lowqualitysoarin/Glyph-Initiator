@@ -19,13 +19,13 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 
 | Action / Class Name | Description | Parameters (Add the Parameters in your Intent's Extras. These are case-sensitive.) |
 | ------ | ----------- | ---------- |
-| START_GLYPH_SESSION<br/> .services.GlyphStartSessionService | Starts the glyph session, recommended to always call first before calling BUILD_GLYPH_CHANNEL or DISPLAY_GLYPH_PROGRESS. | None. |
-| STOP_GLYPH_SESSION<br/> .services.GlyphStopSessionService | Stops the glyph session, always call this after when you are done sending actions through the app. Else essential notifications, and music visualization. won't work after calling your automation. | None. |
-| PLAY_GLYPH_ACTION<br/> .services.GlyphPlayActionService | Plays a glyph action. | [String] actionKey : null,<br/> [Boolean] noAudio : false
-| STOP_GLYPH_ACTION<br/> .services.GlyphStopActionService | Stops the currently playing glyph action. | None. |
-| DISPLAY_GLYPH_PROGRESS<br/> .services.GlyphDisplayProgressService | Displays the given progress to the glyph interface. | [String] channel : null,<br/> [Integer] progress : 0,<br/> [Boolean] reversed : false |
-| BUILD_GLYPH_CHANNEL<br/> .services.GlyphBuildChannelService | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Boolean] noAnimate : false,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
-| GLYPH_OFF<br/> .services.GlyphOffService | Different from STOP_GLYPH_SESSION, this just turns off all the lit up glyphs called by BUILD_GLYPH_CHANNEL DISPLAY_GLYPH_PROGRESS but doesn't stop the session. | None. | 
+| [Action] START_GLYPH_SESSION<br/> [Class] .services.GlyphStartSessionService | Starts the glyph session, recommended to always call first before calling BUILD_GLYPH_CHANNEL or DISPLAY_GLYPH_PROGRESS. | None. |
+| [Action] STOP_GLYPH_SESSION<br/> [Class] .services.GlyphStopSessionService | Stops the glyph session, always call this after when you are done sending actions through the app. Else essential notifications, and music visualization. won't work after calling your automation. | None. |
+| [Action] PLAY_GLYPH_ACTION<br/> [Class] .services.GlyphPlayActionService | Plays a glyph action. | [String] actionKey : null,<br/> [Boolean] noAudio : false
+| [Action] STOP_GLYPH_ACTION<br/> [Class] .services.GlyphStopActionService | Stops the currently playing glyph action. | None. |
+| [Action] DISPLAY_GLYPH_PROGRESS<br/> [Class] .services.GlyphDisplayProgressService | Displays the given progress to the glyph interface. | [String] channel : null,<br/> [Integer] progress : 0,<br/> [Boolean] reversed : false |
+| [Action] BUILD_GLYPH_CHANNEL<br/> [Class] .services.GlyphBuildChannelService | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Boolean] noAnimate : false,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
+| [Action] GLYPH_OFF<br/> [Class] .services.GlyphOffService | Different from STOP_GLYPH_SESSION, this just turns off all the lit up glyphs called by BUILD_GLYPH_CHANNEL DISPLAY_GLYPH_PROGRESS but doesn't stop the session. | None. | 
 
 ## Parameter Help
 [String] actionKey : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make the sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.
