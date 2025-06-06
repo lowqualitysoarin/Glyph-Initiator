@@ -10,7 +10,7 @@ Since I don't have the API key yet, you need to enable the glyph debugger in ord
 
 Download the app on the releases page here in this repository and install the apk on your phone, launch the app and accept permissions, confirm the app is marked as an active app by opening your quick settings menu and tapping on the icon mostly showed as (1) to the left of the settings icon. Once that is confirmed, you can close the app or stay in it if you want to add glyph composition entry.
 
-If you have Macrodroid you can download these Action Blocks to give you an idea on how to get this up and working.
+If you have Macrodroid you can download these [Action Blocks](https://drive.google.com/file/d/1owAWLgtwWdtXnma2T-MqKazWTJKeH1ux/view?usp=sharing) to give you an idea on how to get this up and working.
 If you don't, in the mean time. Here is a little documentation how to setup the intent you are going to send to this application
 
 - Intent Type: _Service_
