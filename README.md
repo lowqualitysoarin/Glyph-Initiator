@@ -22,7 +22,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 | PLAY_GLYPH_ACTION | Plays a glyph action. | [String] actionKey : null,<br/> [Boolean] noAudio : false
 | STOP_GLYPH_ACTION | Stops the currently playing glyph action. | None. |
 | DISPLAY_GLYPH_PROGRESS | Displays the given progress to the glyph interface. | [String] channel : null,<br/> [Integer] progress : 0,<br/> [Boolean] reversed : false |
-| BUILD_GLYPH_CHANNEL | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
+| BUILD_GLYPH_CHANNEL | Toggles the given glyph channel from the intent. | [String] channel : null,<br/> [Boolean] noAnimate : false,<br/> [Integer] interval : 10,<br/> [Integer] cycles : 1,<br/> [Integer] period : 3000 |
 
 ## Parameter Help
 [String] channel : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone.
