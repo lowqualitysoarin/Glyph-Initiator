@@ -16,7 +16,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 - Intent Type: _Service_
 - Package Name: _com.lowqualitysoarin.glyphinitiator_
 - Action Name: _com.lqs.glyph.intent.action.[Action - Replace this with the desired action below.]_
-- Class: _com.lowqualitysoarin.glyphinitiator.services.[Class - Replace this with the desired class below.]_
+- Class: _com.lowqualitysoarin.glyphinitiator.[Class - Replace this with the desired class below.]_
 
 ## Action List
 
