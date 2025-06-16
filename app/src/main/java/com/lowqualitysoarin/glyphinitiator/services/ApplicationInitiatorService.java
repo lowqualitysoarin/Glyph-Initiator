@@ -20,7 +20,7 @@ public class ApplicationInitiatorService extends Service {
             Intent startSessionService = new Intent(this, GlyphStartSessionService.class);
             startForegroundService(startSessionService);
         }
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Nullable

@@ -43,7 +43,7 @@ public class AppNotificationManager {
                 context,
                 0,
                 notificationIntent,
-                PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
 
         return new NotificationCompat.Builder(context, CHANNEL_ID)
@@ -52,6 +52,13 @@ public class AppNotificationManager {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
+    }
+
+    public static void notify(Context context, Notification notification) {
+        NotificationManager manager = getSystemService(context, NotificationManager.class);
+        if (manager != null) {
+            manager.notify(NOTIFICATION_ID, notification);
+        }
     }
 
     public static boolean isNotificationChannelReady() {

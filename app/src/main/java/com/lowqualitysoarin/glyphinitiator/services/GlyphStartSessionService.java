@@ -16,7 +16,7 @@ public class GlyphStartSessionService extends Service {
         if (!GlyphControl.isGlyphStarted()) {
             GlyphControl.startGlyphSession(getApplicationContext());
 
-            Notification foregroundNotification = AppNotificationManager.createForegroundNotification(this, "Glyph Playground", "Glyph Playground is running...");
+            Notification foregroundNotification = AppNotificationManager.createForegroundNotification(this, "Glyph Initiator", "Glyph Initiator is running...");
             startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
         }
         return START_NOT_STICKY;
