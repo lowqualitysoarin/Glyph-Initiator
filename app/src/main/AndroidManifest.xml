@@ -2,12 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="com.nothing.ketchum.permission.ENABLE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <uses-permission android:name="com.nothing.ketchum.permission.ENABLE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
         android:allowBackup="true"
@@ -19,13 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GlyphInitiator">
 
-        <meta-data android:name="NothingKey" android:value="test"/>
+        <meta-data android:name="NothingKey" android:value="test" />
 
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,7 +51,6 @@
                 <action android:name="com.lqs.glyph.intent.action.START_GLYPH_SESSION" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphStopSessionService"
             android:exported="true"
@@ -58,7 +60,6 @@
                 <action android:name="com.lqs.glyph.intent.action.STOP_GLYPH_SESSION" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphActionService"
             android:exported="true"
@@ -68,7 +69,6 @@
                 <action android:name="com.lqs.glyph.intent.action.PLAY_GLYPH_ACTION" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphStopActionService"
             android:exported="true"
@@ -78,7 +78,6 @@
                 <action android:name="com.lqs.glyphinitiator.intent.action.STOP_GLYPH_ACTION" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphDisplayProgressService"
             android:exported="true"
@@ -88,7 +87,6 @@
                 <action android:name="com.lqs.glyph.intent.action.DISPLAY_GLYPH_PROGRESS" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphBuildChannelService"
             android:exported="true"
@@ -98,7 +96,6 @@
                 <action android:name="com.lqs.glyph.intent.action.BUILD_GLYPH_CHANNEL" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.GlyphOffService"
             android:exported="true"
@@ -108,7 +105,6 @@
                 <action android:name="com.lqs.glyph.intent.action.GLYPH_OFF" />
             </intent-filter>
         </service>
-
         <service
             android:name=".services.ApplicationInitiatorService"
             android:exported="true"
@@ -119,4 +115,5 @@
             </intent-filter>
         </service>
     </application>
+
 </manifest>
