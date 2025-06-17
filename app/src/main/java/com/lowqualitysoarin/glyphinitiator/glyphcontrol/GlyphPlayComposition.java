@@ -11,6 +11,8 @@ import android.os.Process;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GlyphPlayComposition {
     private static int[][] currentComposition;
@@ -31,6 +33,12 @@ public class GlyphPlayComposition {
     private static Context currentContext;
     private static boolean isMediaPlayerPrepared = false;
     private static boolean shouldPlayImmediatelyAfterPrepare = false;
+
+    public interface GlyphCompositionListener {
+        void onCompositionStart();
+        void onCompositionEnd();
+    }
+    private static List<GlyphCompositionListener> listeners = new ArrayList<>();
 
     private static class TimedLoopRunnable implements Runnable {
         private boolean playedInternal = false;
@@ -226,6 +234,9 @@ public class GlyphPlayComposition {
             Log.d("GlyphLoopThread", "Composition playback sequence posted.");
 
             GlyphControl.startGlyphSession(currentContext);
+            for (GlyphCompositionListener listener : listeners) {
+                listener.onCompositionStart();
+            }
         } else {
             Log.e("GlyphPlayComposition", "glyphSequenceHandler is null. Cannot start playback sequence.");
             if (mediaPlayer != null) {
@@ -273,6 +284,9 @@ public class GlyphPlayComposition {
         }
 
         GlyphControl.endGlyphSession();
+        for (GlyphCompositionListener listener : listeners) {
+            listener.onCompositionEnd();
+        }
 
         currentContext = null;
         if (mediaPlayer != null) {
@@ -287,6 +301,16 @@ public class GlyphPlayComposition {
             GlyphControl.glyphOff();
             Log.d("GlyphLoopThread", "GlyphOff called on main thread due to stopComposition.");
         });
+    }
+
+    public static void addEventListener(GlyphCompositionListener listener) {
+        if (listeners.contains(listener)) return;
+        listeners.add(listener);
+    }
+
+    public static void removeEventListener(GlyphCompositionListener listener) {
+        if (!listeners.contains(listener)) return;
+        listeners.remove(listener);
     }
 
     public static synchronized void release() {

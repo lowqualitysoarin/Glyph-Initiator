@@ -15,8 +15,23 @@ import com.lowqualitysoarin.glyphinitiator.notif.AppNotificationManager;
 import com.lowqualitysoarin.glyphinitiator.utils.GlyphAudioDecompressor;
 import com.lowqualitysoarin.glyphinitiator.utils.OggEntryAdapter;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class GlyphActionService extends Service {
     private Context context;
+    private static AtomicBoolean isRunning = new AtomicBoolean(false);
+    private final GlyphPlayComposition.GlyphCompositionListener listener = new GlyphPlayComposition.GlyphCompositionListener() {
+        @Override
+        public void onCompositionStart() {
+            Log.d("GlyphActionService", "Composition started.");
+        }
+
+        @Override
+        public void onCompositionEnd() {
+            Log.d("GlyphActionService", "Composition ended.");
+            isRunning.set(false);
+        }
+    };
 
     @Override
     public void onCreate() {
@@ -28,6 +43,11 @@ public class GlyphActionService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null || intent.getExtras() == null) {
             Log.e("GlyphActionService", "Can't start service without intent extras.");
+            stopSelf(startId);
+            return START_NOT_STICKY;
+        } else if (isRunning.get()) {
+            Log.e("GlyphActionService", "Service is already running.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -39,7 +59,7 @@ public class GlyphActionService extends Service {
         boolean noAudio = intent.getBooleanExtra("noAudio", false);;
 
         if (entry == null || entry.getUriString() == null) {
-            stopSelf();
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -49,7 +69,10 @@ public class GlyphActionService extends Service {
         Notification foregroundNotification = AppNotificationManager.createForegroundNotification(this, "Glyph Action Running", "Playing glyph composition...");
         startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
 
+        isRunning.set(true);
+        GlyphPlayComposition.addEventListener(listener);
         GlyphPlayComposition.playComposition(context, fileUri, composition, noAudio);
+
         return START_STICKY;
     }
 
