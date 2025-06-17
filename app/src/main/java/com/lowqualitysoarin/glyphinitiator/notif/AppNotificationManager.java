@@ -15,14 +15,14 @@ import com.lowqualitysoarin.glyphinitiator.MainActivity;
 import com.lowqualitysoarin.glyphinitiator.R;
 
 public class AppNotificationManager {
-    private static final String CHANNEL_ID = "GlyphPlaygroundChannel";
+    private static final String CHANNEL_ID = "GlyphInitiatorChannel";
     private static boolean isReady;
     public static final int NOTIFICATION_ID = 1;
 
     public static void readyNotificationChannel(Context appContext) {
         NotificationChannel serviceChannel = new NotificationChannel(
                 CHANNEL_ID,
-                "Glyph Playground Service Channel",
+                "Glyph Initiator Service Channel",
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         serviceChannel.setSound(null, null);
@@ -52,13 +52,6 @@ public class AppNotificationManager {
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
-    }
-
-    public static void notify(Context context, Notification notification) {
-        NotificationManager manager = getSystemService(context, NotificationManager.class);
-        if (manager != null) {
-            manager.notify(NOTIFICATION_ID, notification);
-        }
     }
 
     public static boolean isNotificationChannelReady() {

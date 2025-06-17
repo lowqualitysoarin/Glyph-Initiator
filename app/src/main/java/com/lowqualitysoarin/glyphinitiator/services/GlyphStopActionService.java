@@ -14,22 +14,11 @@ import com.lowqualitysoarin.glyphinitiator.notif.AppNotificationManager;
 public class GlyphStopActionService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // --- Foreground Service Notification ---
-        Intent notificationIntent = new Intent(this, MainActivity.class); // Replace YourMainActivity if necessary
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
-                0,
-                notificationIntent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
-
-        Notification foregroundNotification = AppNotificationManager.createForegroundNotification(this, "Glyph Playground", "Stopped playing composition...");
-        startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
-
-        GlyphPlayComposition.stopComposition();
+        GlyphPlayComposition.stopComposition(false);
         GlyphPlayComposition.release();
 
-        return START_STICKY;
+        stopSelf(startId);
+        return START_NOT_STICKY;
     }
 
     @Nullable

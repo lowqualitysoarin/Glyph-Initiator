@@ -15,6 +15,7 @@ public class GlyphBuildChannelService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null || intent.getExtras() == null) {
             Log.e("GlyphBuildChannelService", "Can't start this service without extra data or without intent.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -25,6 +26,7 @@ public class GlyphBuildChannelService extends Service {
 
         if (channel != null && channel.isBlank()) {
             Log.e("GlyphBuildChannelService", "Can't start this service without a channel.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -36,6 +38,8 @@ public class GlyphBuildChannelService extends Service {
         buildParams.period = intent.getIntExtra("period", 3000);
 
         GlyphControl.glyphBuildChannel(channel, noAnimate, buildParams);
+
+        stopSelf(startId);
         return START_STICKY;
     }
 

@@ -38,7 +38,7 @@ public class GlyphPlayComposition {
         void onCompositionStart();
         void onCompositionEnd();
     }
-    private static List<GlyphCompositionListener> listeners = new ArrayList<>();
+    private static final List<GlyphCompositionListener> listeners = new ArrayList<>();
 
     private static class TimedLoopRunnable implements Runnable {
         private boolean playedInternal = false;
@@ -95,7 +95,7 @@ public class GlyphPlayComposition {
                         Log.d("MediaPlayerDebug", "MediaPlayer started by TimedLoopRunnable.");
                     } catch (IllegalStateException e) {
                         Log.e("MediaPlayerDebug", "Failed to start MediaPlayer in runnable: " + e.getMessage());
-                        stopComposition();
+                        stopComposition(false);
                         return;
                     }
                 }
@@ -131,7 +131,7 @@ public class GlyphPlayComposition {
         }
 
         // Stop any existing playback first.
-        stopComposition();
+        stopComposition(true);
 
         lastCompositionRow = null;
         currentComposition = composition;
@@ -160,7 +160,7 @@ public class GlyphPlayComposition {
                 }
             });
             mediaPlayer.setOnCompletionListener(mp -> {
-                stopComposition();
+                stopComposition(false);
             });
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
                 Log.e("MediaPlayerDebug", "MediaPlayer Error - What: " + what + ", Extra: " + extra);
@@ -193,7 +193,7 @@ public class GlyphPlayComposition {
                             errorMsg += ", Other extra error (" + extra + ")";
                     }
                 }
-                stopComposition();
+                stopComposition(false);
                 return true;
             });
             mediaPlayer.prepareAsync();
@@ -246,7 +246,7 @@ public class GlyphPlayComposition {
         }
     }
 
-    public static void stopComposition() {
+    public static void stopComposition(boolean ignoreListener) {
         Log.d("GlyphLoopThread", "stopComposition called.");
         if (glyphSequenceHandler != null && glyphHandlerThread != null && glyphHandlerThread.isAlive()) {
             glyphSequenceHandler.removeCallbacks(timedLoopRunnable);
@@ -283,10 +283,12 @@ public class GlyphPlayComposition {
             glyphSequenceHandler = null;
         }
 
-        GlyphControl.endGlyphSession();
-        for (GlyphCompositionListener listener : listeners) {
-            listener.onCompositionEnd();
+        if (!ignoreListener) {
+            for (GlyphCompositionListener listener : listeners) {
+                listener.onCompositionEnd();
+            }
         }
+        GlyphControl.endGlyphSession();
 
         currentContext = null;
         if (mediaPlayer != null) {

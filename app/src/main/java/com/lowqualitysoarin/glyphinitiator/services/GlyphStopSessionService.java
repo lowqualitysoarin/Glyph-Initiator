@@ -18,6 +18,8 @@ public class GlyphStopSessionService extends Service {
         } else {
             Log.d("GlyphStopSessionService", "Glyph session is not running.");
         }
+
+        stopSelf(startId);
         return START_NOT_STICKY;
     };
 

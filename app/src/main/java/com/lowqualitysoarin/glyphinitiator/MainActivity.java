@@ -1,18 +1,23 @@
 package com.lowqualitysoarin.glyphinitiator;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
     private SharedPreferences sharedPreferences;
     private Gson gson;
     private ActivityResultLauncher<Intent> filePickerLauncher;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +75,21 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
                 });
 
         chooseFileButton.setOnClickListener(v -> openFilePicker());
+        
+        requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                Log.d("Glyph Initiator", "Notification permission granted.");
+            } else {
+                Log.e("Glyph Initiator", "Notification permission denied.");
+            }
+        });
+        askNotificationPermissions();
     }
 
     private void openFilePicker() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT); // More robust for persistent access
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("audio/ogg"); // Filter for .ogg files
-        // Optionally, if you want to allow picking from local storage only:
-        // intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+        intent.setType("audio/ogg");
         filePickerLauncher.launch(intent);
     }
 
@@ -121,22 +134,15 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
         return (loadedList != null) ? loadedList : new ArrayList<>();
     }
 
-    // --- OggEntryAdapter.OnItemInteractionListener Callbacks ---
     @Override
     public void onDeleteClicked(int position) {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Entry")
                 .setMessage("Are you sure you want to delete '" + oggEntriesList.get(position).getName() + "'?")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                    // Before removing, revoke persistable URI permission if this is the last reference
-                    // This is a bit more complex as you need to check if other entries use the same URI
-                    // For simplicity here, we are not revoking. In a real app, manage this carefully.
-                    // Uri uriToRevoke = oggEntriesList.get(position).getUri();
-                    // getContentResolver().releasePersistableUriPermission(uriToRevoke, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
                     oggEntriesList.remove(position);
                     adapter.notifyItemRemoved(position);
-                    adapter.notifyItemRangeChanged(position, oggEntriesList.size()); // Update subsequent positions
+                    adapter.notifyItemRangeChanged(position, oggEntriesList.size());
                     saveEntries();
                 })
                 .setNegativeButton("Cancel", null)
@@ -170,13 +176,16 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
 
     @Override
     public void onItemClicked(int position) {
-        // Handle item click, e.g., play the OGG file
         OggEntry entry = oggEntriesList.get(position);
         Toast.makeText(this, "Playing: " + entry.getName(), Toast.LENGTH_SHORT).show();
-        // You would typically use MediaPlayer here to play the audio
-        // Example:
-        // MediaPlayer mediaPlayer = MediaPlayer.create(this, entry.getUri());
-        // mediaPlayer.start();
-        // Remember to handle mediaPlayer.release() when done.
+    }
+
+    private void askNotificationPermissions() {
+        if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+            Toast.makeText(this, "Notification permission is required to keep the app running in the background.", Toast.LENGTH_LONG).show();
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+        }
     }
 }

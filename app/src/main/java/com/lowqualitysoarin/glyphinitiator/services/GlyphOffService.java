@@ -12,6 +12,7 @@ public class GlyphOffService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         GlyphControl.glyphOff();
+        stopSelf(startId);
         return START_NOT_STICKY;
     }
 

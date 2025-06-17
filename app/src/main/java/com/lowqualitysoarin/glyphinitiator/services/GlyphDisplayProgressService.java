@@ -18,6 +18,7 @@ public class GlyphDisplayProgressService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null || intent.getExtras() == null) {
             Log.e("GlyphDisplayProgressService", "Can't start this service without extra data or without intent.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -28,16 +29,16 @@ public class GlyphDisplayProgressService extends Service {
 
         if (channel != null && channel.isBlank()) {
             Log.e("GlyphDisplayProgressService", "Can't start this service without a channel.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
         int progress = intent.getIntExtra("progress", 0);
         boolean reversed = intent.getBooleanExtra("reversed", false);
 
-        Notification foregroundNotification = AppNotificationManager.createForegroundNotification(getApplicationContext(), "Glyph Progress Running", "Trying to show progress on the glyph.");
-        startForeground(AppNotificationManager.NOTIFICATION_ID, foregroundNotification);
-
         GlyphControl.glyphDisplayProgress(channel, progress, reversed);
+        stopSelf(startId);
+
         return START_STICKY;
     }
 

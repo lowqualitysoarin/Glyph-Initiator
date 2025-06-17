@@ -1,5 +1,6 @@
 package com.lowqualitysoarin.glyphinitiator.services;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -17,9 +18,12 @@ public class ApplicationInitiatorService extends Service {
         }
 
         if (!GlyphControl.isGlyphStarted()) {
-            Intent startSessionService = new Intent(this, GlyphStartSessionService.class);
-            startForegroundService(startSessionService);
+            GlyphControl.startGlyphSession(this);
         }
+
+        Notification statusNotification = AppNotificationManager.createForegroundNotification(getApplicationContext(), "Glyph Initiator", "Glyph Initiator is running!");
+        startForeground(AppNotificationManager.NOTIFICATION_ID, statusNotification);
+
         return START_STICKY;
     }
 
