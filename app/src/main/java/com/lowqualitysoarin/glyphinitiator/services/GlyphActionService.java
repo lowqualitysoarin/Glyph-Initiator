@@ -28,12 +28,14 @@ public class GlyphActionService extends Service {
         @Override
         public void onCompositionEnd() {
             Log.d("GlyphActionService", "Composition ended.");
+            isRunning.set(false);
             if (currentStartId != -1) {
                 stopSelf(currentStartId);
             } else {
                 stopSelf();
             }
             currentStartId = -1;
+            GlyphPlayComposition.removeEventListener(listener);
         }
     };
 
@@ -51,11 +53,13 @@ public class GlyphActionService extends Service {
             return START_NOT_STICKY;
         } else if (isRunning.get()) {
             Log.e("GlyphActionService", "Service is already running.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
         if (!isRunning.compareAndSet(false, true)) {
             Log.e("GlyphActionService", "Service is already ran by another thread.");
+            stopSelf(startId);
             return START_NOT_STICKY;
         }
 
@@ -87,12 +91,5 @@ public class GlyphActionService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-
-    @Override
-    public void onDestroy() {
-        GlyphPlayComposition.removeEventListener(listener);
-        isRunning.set(false);
-        super.onDestroy();
     }
 }
