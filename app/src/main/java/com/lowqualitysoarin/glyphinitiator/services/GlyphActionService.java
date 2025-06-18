@@ -19,6 +19,7 @@ public class GlyphActionService extends Service {
     private Context context;
     private int currentStartId = -1;
     private static final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private static final AtomicBoolean allowOverride = new AtomicBoolean(false);
     private final GlyphPlayComposition.GlyphCompositionListener listener = new GlyphPlayComposition.GlyphCompositionListener() {
         @Override
         public void onCompositionStart() {
@@ -28,14 +29,7 @@ public class GlyphActionService extends Service {
         @Override
         public void onCompositionEnd() {
             Log.d("GlyphActionService", "Composition ended.");
-            isRunning.set(false);
-            if (currentStartId != -1) {
-                stopSelf(currentStartId);
-            } else {
-                stopSelf();
-            }
-            currentStartId = -1;
-            GlyphPlayComposition.removeEventListener(listener);
+            stopAction();
         }
     };
 
@@ -51,17 +45,22 @@ public class GlyphActionService extends Service {
             Log.e("GlyphActionService", "Can't start service without intent extras.");
             stopSelf(startId);
             return START_NOT_STICKY;
-        } else if (isRunning.get()) {
-            Log.e("GlyphActionService", "Service is already running.");
-            stopSelf(startId);
-            return START_NOT_STICKY;
+        } else if (isRunning.get() ) {
+            if (!allowOverride.get()) {
+                Log.e("GlyphActionService", "Can't start service while another one is running.");
+                stopSelf(startId);
+                return START_NOT_STICKY;
+            } else {
+                Log.d("GlyphActionService", "Overriding current action...");
+                stopAction();
+            }
         }
 
-        if (!isRunning.compareAndSet(false, true)) {
-            Log.e("GlyphActionService", "Service is already ran by another thread.");
-            stopSelf(startId);
-            return START_NOT_STICKY;
-        }
+        //if (!isRunning.compareAndSet(false, true)) {
+        //    Log.e("GlyphActionService", "Service is already ran by another thread.");
+        //    stopSelf(startId);
+        //    return START_NOT_STICKY;
+        //}
 
         currentStartId = startId;
 
@@ -71,6 +70,7 @@ public class GlyphActionService extends Service {
         }
 
         boolean noAudio = intent.getBooleanExtra("noAudio", false);
+        allowOverride.set(intent.getBooleanExtra("allowOverride", false));
 
         if (entry == null || entry.getUriString() == null) {
             stopSelf(currentStartId);
@@ -85,6 +85,20 @@ public class GlyphActionService extends Service {
         GlyphPlayComposition.playComposition(context, fileUri, composition, noAudio);
 
         return START_STICKY;
+    }
+
+    private void stopAction() {
+        isRunning.set(false);
+        allowOverride.set(false);
+
+        if (currentStartId != -1) {
+            stopSelf(currentStartId);
+        } else {
+            stopSelf();
+        }
+        currentStartId = -1;
+
+        GlyphPlayComposition.removeEventListener(listener);
     }
 
     @Nullable
