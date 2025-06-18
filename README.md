@@ -36,7 +36,9 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 
 **Note: when calling overridable glyph action intents on repeat may cause the app to crash, the only way to atleast minimize the chance of a crash is to add cooldowns before and after the sending the glyph action call.**
 
+
 [**String**] *channel* : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone. You don't need to include the numbers on the zone from the documentation, example if you want to use the Channel "A" just put "A" instead of "A1".<br/>
+
 
 [**Integer**] *interval* : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))\
 [**Integer**] *cycles* : [Nothing's buildCycles documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildCycles(int%20cycles))\
