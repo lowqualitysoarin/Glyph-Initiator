@@ -24,7 +24,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 | ------ | ----------- | ---------- |
 | [**Action**] START_GLYPH_SESSION<br/> [**Class**] .services.GlyphStartSessionService | Starts the glyph session, recommended to always call first before calling BUILD_GLYPH_CHANNEL or DISPLAY_GLYPH_PROGRESS. | None. |
 | [**Action**] STOP_GLYPH_SESSION<br/> [**Class**] .services.GlyphStopSessionService | Stops the glyph session, always call this after when you are done sending actions through the app. Else essential notifications, and music visualization. won't work after calling your automation. | None. |
-| [**Action**] PLAY_GLYPH_ACTION<br/> [**Class**] .services.GlyphActionService | Plays a glyph action. | [**String**] *actionKey* : null,<br/> [**Boolean**] *noAudio* : false
+| [**Action**] PLAY_GLYPH_ACTION<br/> [**Class**] .services.GlyphActionService | Plays a glyph action. | [**String**] *actionKey* : null,<br/> [**Boolean**] *noAudio* : false,</br> [**Boolean**] *allowOverride* : false
 | [**Action**] STOP_GLYPH_ACTION<br/> [**Class**] .services.GlyphStopActionService | Stops the currently playing glyph action. | None. |
 | [**Action**] DISPLAY_GLYPH_PROGRESS<br/> [**Class**] .services.GlyphDisplayProgressService | Displays the given progress to the glyph interface. | [**String**] *channel* : null,<br/> [**Integer**] *progress* : 0,<br/> [**Boolean**] *reversed* : false |
 | [**Action**] BUILD_GLYPH_CHANNEL<br/> [**Class**] .services.GlyphBuildChannelService | Toggles the given glyph channel from the intent. | [**String**] *channel* : null,<br/> [**Boolean**] *noAnimate* : false,<br/> [**Integer**] *interval* : 10,<br/> [**Integer**] *cycles* : 1,<br/> [**Integer**] *period* : 3000 |
@@ -32,6 +32,8 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 
 ## Parameter Help
 [**String**] *actionKey* : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.<br/><br/>
+[**Boolean**] *allowOverride* : This is an option specifically for PLAY_GLYPH_ACTION whether you want the current intent to overridable by another PLAY_GLYPH_ACTION call. If enabled the the glyph action you are going to play can be overridable by another glyph action call, if not your glyph action won't be overridable by another glyph action call and will just ignore the other glyph action calls.
+
 [**String**] *channel* : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone. You don't need to include the numbers on the zone from the documentation, example if you want to use the Channel "A" just put "A" instead of "A1".<br/>
 
 [**Integer**] *interval* : [Nothing's buildInterval documentation.](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit#:~:text=buildInterval(int%20interval))\
