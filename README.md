@@ -34,7 +34,7 @@ If you don't, in the mean time. Here is a little documentation how to setup the 
 [**String**] *actionKey* : This is the target action that you want to play when calling PLAY_GLYPH_ACTION, make sure the name that you are going to provide in this parameter corresponds to the existing entry you added in the app.<br/><br/>
 [**Boolean**] *allowOverride* : This is an option specifically for PLAY_GLYPH_ACTION whether you want the current intent to overridable by another PLAY_GLYPH_ACTION call. If enabled the glyph action you are going to play can be overridable by another glyph action call, if not your glyph action won't be overridable by another glyph action call and will just ignore the other glyph action calls.
 
-**Note** when calling overridable glyph action intents on repeat may cause the app to crash, the only way to atleast minimize the chance of a crash is to add cooldowns before and after the sending the glyph action call.
+**Note: when calling overridable glyph action intents on repeat may cause the app to crash, the only way to atleast minimize the chance of a crash is to add cooldowns before and after the sending the glyph action call.**
 
 [**String**] *channel* : This is the channel that you want to use, check [Nothing's GDK](https://github.com/Nothing-Developer-Programme/Glyph-Developer-Kit?tab=readme-ov-file#glyph) on github to view the glyph channels of your phone. You don't need to include the numbers on the zone from the documentation, example if you want to use the Channel "A" just put "A" instead of "A1".<br/>
 
