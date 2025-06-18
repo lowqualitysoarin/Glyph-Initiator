@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
     private Gson gson;
     private ActivityResultLauncher<Intent> filePickerLauncher;
     private ActivityResultLauncher<String> requestNotificationPermissionLauncher;
-    private ActivityResultLauncher<Intent> requestIgnoreBatteryOptimizationsLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,19 +87,6 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
             }
         });
         askNotificationPermissions();
-
-        requestIgnoreBatteryOptimizationsLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-            boolean isIgnoringBatteryOptimizations = pm.isIgnoringBatteryOptimizations(getPackageName());
-            if (isIgnoringBatteryOptimizations) {
-                Log.d("Glyph Initiator", "Battery optimization ignored.");
-            } else {
-                Log.e("Glyph Initiator", "Battery optimization not ignored.");
-            }
-        });
-        askIgnoreBatteryOptimizationPermission();
     }
 
     private void openFilePicker() {
@@ -203,28 +189,6 @@ public class MainActivity extends AppCompatActivity implements OggEntryAdapter.O
             requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
         } else {
             requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-        }
-    }
-
-    private void askIgnoreBatteryOptimizationPermission() {
-        PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-        boolean isIgnoringBatteryOptimizations = pm.isIgnoringBatteryOptimizations(getPackageName());
-
-        if (!isIgnoringBatteryOptimizations) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Battery Optimization")
-                    .setMessage("To prevent the app from getting killed randomly, please disable battery optimizations.")
-                    .setPositiveButton("Go to Settings", (dialog, which) -> {
-                        @SuppressLint("BatteryLife") Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-                        intent.setData(Uri.parse("package:" + getPackageName()));
-                        requestIgnoreBatteryOptimizationsLauncher.launch(intent);
-                    })
-                    .setNegativeButton("Cancel", (dialog, which) -> {
-                        Toast.makeText(this, "Background functionality might be limited without disabling battery optimizations for this app.", Toast.LENGTH_LONG).show();
-                    })
-                    .show();
-        } else {
-            Log.d("Glyph Initiator", "Battery optimization already ignored.");
         }
     }
 }
