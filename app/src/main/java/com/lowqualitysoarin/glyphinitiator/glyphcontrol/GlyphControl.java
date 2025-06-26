@@ -114,7 +114,7 @@ public class GlyphControl {
             case 2:
                 String[] np2UnsupportedChannels = {"a", "b", "e"};
                 for (String unsupportedChannel : np2UnsupportedChannels) {
-                    if (channel.equalsIgnoreCase(unsupportedChannel)) {
+                    if (!channel.equalsIgnoreCase(unsupportedChannel)) {
                         Log.e(tag, "Channels other than C and D is not supported on the Nothing Phone (2).");
                         return;
                     }
