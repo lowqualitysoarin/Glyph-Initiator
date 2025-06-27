@@ -105,26 +105,31 @@ public class GlyphControl {
         if (getDeviceModelIndex() == 0) return;
 
         int deviceModelIndex = getDeviceModelIndex();
+        Log.d(tag, "Device model index: " + deviceModelIndex);
+
         switch (deviceModelIndex) {
             case 1:
                 if (!channel.equalsIgnoreCase("d")) {
                     Log.e(tag, "Channels other than D is not supported on the Nothing Phone (1).");
                     return;
                 }
+                break;
             case 2:
                 String[] np2UnsupportedChannels = {"a", "b", "e"};
                 for (String unsupportedChannel : np2UnsupportedChannels) {
-                    if (!channel.equalsIgnoreCase(unsupportedChannel)) {
+                    if (channel.equalsIgnoreCase(unsupportedChannel)) {
                         Log.e(tag, "Channels other than C and D is not supported on the Nothing Phone (2).");
                         return;
                     }
                 }
+                break;
             case 3:
             case 4:
                 if (!channel.equalsIgnoreCase("c")) {
                     Log.e(tag, "Channels other than C is not supported on the Nothing Phone (2a) series.");
                     return;
                 }
+                break;
         }
 
         GlyphFrame.Builder channelFrame = getChannel(channel);
